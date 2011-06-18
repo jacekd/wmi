@@ -33,9 +33,23 @@ $os_serialnumber = $objItem->{SerialNumber};
 }
 
 my $diskItems = $oWMIService->ExecQuery ( "SELECT * FROM Win32_LogicalDisk", "WQL", bFlagReturnImmediately | bFlagForwardOnly);
+foreach my $objItem (in $diskItems) 
+{
+$device_id = $objItem->{DeviceID};
+$file_system = $objItem->{FileSystem};
+$volume_serial_number = $objItem->{VolumeSerialNumber};
+$size = $objItem->{Size};
+$free_space = $objItem->{FreeSpace};
+$dbh->do("INSERT INTO disks(warehouse,name,ip,device_id,file_system,serial_number,size,free_space) 
+			VALUES (?,?,?,?,?,?,?,?)",
+			undef,
+			$warehouse, $name, $ip, $device_id, $file_system, $volume_serial_number, $size, $free_space);
+}
 
 $dbh->do("INSERT INTO equipment(warehouse,name,caption,domain,manufacturer,model,ip,os_caption,os_buildnum,os_build,os_version,os_serialnumber) 
 			VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", 
 			undef, 
 			$warehouse, $name, $caption, $domain, $manufacturer, $model, $ip, $os_caption, $os_buildnum, $os_build, $os_version, $os_serialnumber);
+			
+
 }
