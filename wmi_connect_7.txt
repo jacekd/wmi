@@ -1,0 +1,20 @@
+#! perl\bin\perl -w
+use strict;
+use Win32::OLE('in');
+
+# supply a list of WMI classes to interrogate
+my @requests = ('Win32_Process', );
+
+# supply a list of computer systems to query
+my @computers = ("10.101.10.107", );
+
+# Connect to each system's CimV2 repository in turn.
+for my $computer( @computers ){
+my $wmi_repos = Win32::OLE->GetObject("winmgmts:{impersonationLevel=impersonate}!\\\\$ENV{COMPUTERNAME}\\root\\CIMV2")
+or die "WMI connection failed: ".Win32::OLE->LastError()."\n";
+
+# Call to each desired Namespace in the current WMI repository.
+for my $request( @requests ){
+my $wmi_collection = $wmi_repos->ExecQuery("SELECT * FROM $request", "WQL", 48 )
+or die "WQL query failed: ".Win32::OLE->LastError()."\n";
+
