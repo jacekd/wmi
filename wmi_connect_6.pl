@@ -3,10 +3,10 @@ use strict;
 use Win32::OLE('in');
 
 # supply a list of WMI classes to interrogate
-my @requests = ('Win32_Processor', );
+my @requests = ('Win32_Product', );
 
 # supply a list of computer systems to query
-my @computers = ("10.101.10.107", );
+my @computers = (".", );
 
 # Connect to each system's CimV2 repository in turn.
 for my $computer( @computers ){

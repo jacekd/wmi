@@ -3,7 +3,7 @@ use strict;
 use Win32::OLE('in');
 use constant bFlagReturnImmediately => 0x10;
 use constant bFlagForwardOnly => 0x20;
-my @computers = ("localhost", "10.101.10.106", "10.101.10.107");
+my @computers = ("localhost", "WMI02", "WMI03", "WMI04", "WMI05");
 foreach my $computer (@computers)
 {
 print "\n";

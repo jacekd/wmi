@@ -14,7 +14,7 @@ use Win32::OLE;
 #my $wmi = Win32::OLE->GetObject("winmgmts://./root/cimv2") or die "failed to retrieve cimv2.";
 # winmgmts means to access WMI service.
 
-my $wmi = Win32::OLE->GetObject("WinMgmts://./root/cimv2") or die "Failed: GetObject\n";
+my $wmi = Win32::OLE->GetObject("WinMgmts://WMI05/root/cimv2") or die "Failed: GetObject\n";
 my $list, my $v;
 
 

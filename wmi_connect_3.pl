@@ -5,9 +5,9 @@ use constant wbemFlagReturnImmediately => 0x10;
 use constant wbemFlagForwardOnly => 0x20;
 use constant WbemAuthenticationLevelPktPrivacy => 6;
 
-my $computer = "10.101.10.107";
-my $admin = ".\\jacek";
-my $pwd = "pifko89";
+my $computer = "10.36.11.151";
+my $admin = "JCKD\\Administrator";
+my $pwd = "BANdusek83!";
 
 my $wbem = Win32::OLE->new('WbemScripting.SWbemLocator');
 my $objWMIService = $wbem->ConnectServer($computer,"",$admin,$pwd); 
