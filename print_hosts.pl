@@ -1,6 +1,7 @@
 #!/usr/bin/perl
-use strict;
-use Win32::OLE('in');
-use constant bFlagReturnImmediately => 0x10;
-use constant bFlagForwardOnly => 0x20;
-my $oWMIService = Win32::OLE->GetObject( "winmgmts:\\\\.\\root\\CIMV2") or die "WMI connection failed.\n";
+use warnings;
+
+
+$range = `C:\\Users\\Administrator\\wmi\\Nmap\\nmap -sP 10.36.11.0/24`;
+@ips = ($range =~ m/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/g);
+print join("\n", @ips);

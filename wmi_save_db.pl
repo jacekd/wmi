@@ -4,14 +4,14 @@ use Win32::OLE('in');
 use DBI;
 use constant bFlagReturnImmediately => 0x10;
 use constant bFlagForwardOnly => 0x20;
-$dbh = DBI->connect('dbi:mysql:wmi:10.36.11.150','wmi','wmi') or die "Connection Error: $DBI::errstr\n";
+$range = `C:\\Users\\Administrator\\wmi\\Nmap\\nmap -sP 10.36.11.0/24`;
+$dbh = DBI->connect('dbi:mysql:wmi:10.36.11.150','wmi','wmi') or warn "Connection Error: $DBI::errstr\n";
 
 my $warehouse = "BOAT1";
-
-my @computers = ("localhost", "WMI02");
+my @computers = ($range =~ m/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/g);
 foreach my $computer (@computers)
 {
-my $oWMIService = Win32::OLE->GetObject( "winmgmts:\\\\$computer\\root\\CIMV2") or die "WMI connection failed.\n";
+if (my $oWMIService = Win32::OLE->GetObject( "winmgmts:\\\\$computer\\root\\CIMV2")) { 
 my $colItems = $oWMIService->ExecQuery ( "SELECT * FROM Win32_ComputerSystem", "WQL", bFlagReturnImmediately | bFlagForwardOnly);
 foreach my $objItem (in $colItems) {
 $name = $objItem->{Name};
@@ -52,4 +52,26 @@ $dbh->do("INSERT INTO equipment(warehouse,name,caption,domain,manufacturer,model
 			$warehouse, $name, $caption, $domain, $manufacturer, $model, $ip, $os_caption, $os_buildnum, $os_build, $os_version, $os_serialnumber);
 			
 
+			
+my $softwareItems = $oWMIService->ExecQuery ( "SELECT * FROM Win32_Product", "WQL", bFlagReturnImmediately | bFlagForwardOnly);
+foreach my $objItem (in $softwareItems)
+{ 
+$sname = $objItem->{Name};
+$description = $objItem->{Description};
+$vendor = $objItem->{Vendor};
+$version = $objItem->{Version};
+$install_date = $objItem->{InstallDate};
+$install_location = $objItem->{InstallLocation};
+$package_code = $objItem->{PackageCode};
+$product_id = $objItem->{ProductID};
+$reg_company = $objItem->{RegCompany};
+$reg_owner = $objItem->{RegOwner};
+$url_info_about = $objItem->{URLInfoAbout};
+$dbh->do("INSERT INTO software(warehouse,name,ip,sname,description,vendor,version,install_date,install_location,package_code,product_id,reg_company,reg_owner,url_info_about)
+			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+			undef,
+			$warehouse, $name, $ip, $sname, $description, $vendor, $version, $install_date, $install_location, $package_code, $product_id, $reg_company, $reg_owner, $url_info_about);
+}	
+
+}
 }

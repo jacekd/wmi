@@ -3,7 +3,7 @@ use strict;
 use Win32::OLE('in');
 
 # supply a list of WMI classes to interrogate
-my @requests = ('Win32_Product', );
+my @requests = ('Win32_LogicalDisk', );
 
 # supply a list of computer systems to query
 my @computers = (".", );

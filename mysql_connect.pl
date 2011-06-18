@@ -4,7 +4,8 @@
  $sql = "select * from test";
  $sth = $dbh->prepare($sql);
  $sth->execute or die "SQL Error: $DBI::errstr\n";
- while ($row = $sth->fetchrow_array)
+ while (@row = $sth->fetchrow_array)
 {
- print "$row \n";
+my $result = $row[1]; #Starts with 0 
+print "$result \n";
 } 
