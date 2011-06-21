@@ -40,12 +40,17 @@ $file_system = $objItem->{FileSystem};
 $volume_serial_number = $objItem->{VolumeSerialNumber};
 $size = $objItem->{Size};
 $free_space = $objItem->{FreeSpace};
+# Clean up entry
+$dbh->do("DELETE FROM disks WHERE warehouse=? AND name=? AND ip=?", undef, $warehouse, $name, $ip);
+# Insert data
 $dbh->do("INSERT INTO disks(warehouse,name,ip,device_id,file_system,serial_number,size,free_space) 
 			VALUES (?,?,?,?,?,?,?,?)",
 			undef,
 			$warehouse, $name, $ip, $device_id, $file_system, $volume_serial_number, $size, $free_space);
 }
-
+# Clean up entry
+$dbh->do("DELETE FROM equipment WHERE warehouse=? AND name=? AND ip=?", undef, $warehouse, $name, $ip);
+# Insert data
 $dbh->do("INSERT INTO equipment(warehouse,name,caption,domain,manufacturer,model,ip,os_caption,os_buildnum,os_build,os_version,os_serialnumber) 
 			VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", 
 			undef, 
@@ -67,6 +72,9 @@ $product_id = $objItem->{ProductID};
 $reg_company = $objItem->{RegCompany};
 $reg_owner = $objItem->{RegOwner};
 $url_info_about = $objItem->{URLInfoAbout};
+# Clean up entry
+$dbh->do("DELETE FROM software WHERE warehouse=? AND name=? AND ip=?", undef, $warehouse, $name, $ip);
+# Insert data
 $dbh->do("INSERT INTO software(warehouse,name,ip,sname,description,vendor,version,install_date,install_location,package_code,product_id,reg_company,reg_owner,url_info_about)
 			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 			undef,

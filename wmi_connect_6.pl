@@ -3,14 +3,14 @@ use strict;
 use Win32::OLE('in');
 
 # supply a list of WMI classes to interrogate
-my @requests = ('Win32_LogicalDisk', );
+my @requests = ('SoftwareLicensingService');
 
 # supply a list of computer systems to query
-my @computers = (".", );
+my @computers = (".", "WMI02");
 
 # Connect to each system's CimV2 repository in turn.
 for my $computer( @computers ){
-my $wmi_repos = Win32::OLE->GetObject("winmgmts:{impersonationLevel=impersonate}!\\\\$ENV{COMPUTERNAME}\\root\\CIMV2")
+my $wmi_repos = Win32::OLE->GetObject("winmgmts:{impersonationLevel=impersonate}!\\\\$computer\\root\\CIMV2")
 or die "WMI connection failed: ".Win32::OLE->LastError()."\n";
 
 # Call to each desired Namespace in the current WMI repository.
